@@ -4,9 +4,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Main {
-    private static void endProgram(Timer timer, Scanner scanner, boolean isTimeOut) {
+    private static void endProgram(Timer timer, Scanner scanner, boolean isTimeOut, int randomNumber) {
         timer.cancel(); // stop timer jika waktu habis atau tebakan user benar
-        if (isTimeOut) System.out.println("\n\nWaktu anda telah habis.");
+        if (isTimeOut) System.out.println("\n\nWaktu anda telah habis. Jawaban yang benar adalah " + randomNumber + ".");
         else System.out.println();
         System.out.println("Terimakasih telah bermain. Sampai jumpa!");
         if (isTimeOut) System.exit(0); // keluar program jika waktu habis
@@ -17,12 +17,13 @@ public class Main {
         Scanner scanner = new Scanner(System.in); // inisialisasi objek scanner
         Random random = new Random(); // inisialisasi objek random
         int randomNumber, answer, attempt = 1;
+        randomNumber = random.nextInt(101); // generate satu angka random antara 0 dan 101
         Timer timer = new Timer(); // inisialisasi objek timer
         TimerTask timertask = new TimerTask() {
             int i = 1; // set value detik awal di 1
 
             public void run() {
-                if (i == 60) endProgram(timer, scanner, true); // jika nilai i == 60, maka timer distop
+                if (i == 60) endProgram(timer, scanner, true, randomNumber); // jika nilai i == 60, maka timer distop
                 i++; // increment variabel i
             }
         };
@@ -40,7 +41,6 @@ public class Main {
             try {
                 answer = scanner.nextInt(); // input tebakan user
                 if (answer >= 1 && answer <= 100) { // handle jika user input angka < 1 dan > 100
-                    randomNumber = random.nextInt(101); // generate satu angka random antara 0 dan 101
                     if (answer == randomNumber) { // output jika tebakan user dengan angka hasil generate sama
                         System.out.println("Selamat, tebakan anda benar!");
                         System.out.println("Anda berhasil menebak angka " + randomNumber + " dalam " + attempt + " kali percobaan.");
@@ -60,6 +60,6 @@ public class Main {
             }
         }
 
-        endProgram(timer, scanner, false);
+        endProgram(timer, scanner, false, randomNumber);
     }
 }
